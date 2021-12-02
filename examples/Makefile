@@ -1,6 +1,6 @@
 # ##########################################################################
 # LZ4 examples - Makefile
-# Copyright (C) Yann Collet 2011-2014
+# Copyright (C) Yann Collet 2011-2020
 #
 # GPL v2 License
 #
@@ -19,7 +19,7 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
 # You can contact the author at :
-#  - LZ4 source repository : https://github.com/Cyan4973/lz4
+#  - LZ4 source repository : https://github.com/lz4/lz4
 #  - LZ4 forum froup : https://groups.google.com/forum/#!forum/lz4c
 # ##########################################################################
 # This makefile compile and test
@@ -94,6 +94,11 @@ test : all $(LZ4)
 	@echo "\n=== Frame compression ==="
 	./frameCompress$(EXT) $(TESTFILE)
 	$(LZ4) -vt $(TESTFILE).lz4
+
+.PHONY: cxxtest
+cxxtest: CFLAGS := -O3 -Wall -Wextra -Wundef -Wshadow -Wcast-align -Werror
+cxxtest: clean
+	CC=$(CXX) $(MAKE) -C . all CFLAGS="$(CFLAGS)"
 
 clean:
 	@rm -f core *.o *.dec *-0 *-9 *-8192 *.lz4s *.lz4 \
